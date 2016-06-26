@@ -92,12 +92,19 @@ angular
                 };
 
                 resource.getAudioEventsWithinRange = function (audioRecordingId, offsets) {
+                    let difference = offsets[1] - offsets[0];
+
                     var query = QueryBuilder.create(function (q) {
                         return q.and(
                             q.eq("audioRecordingId", audioRecordingId),
-                            q.gteq("startTimeSeconds", offsets[0]),
-                            q.lt("endTimeSeconds", offsets[1])
+                            q.gteq("endTimeSeconds", offsets[0]),
+                            q.lteq("startTimeSeconds", offsets[1])
                         );
+                        // return q.and(
+                        //     q.eq("audioRecordingId", audioRecordingId),
+                        //     q.gteq("startTimeSeconds", offsets[0]),
+                        //     q.lt("endTimeSeconds", offsets[1])
+                        // );
                     });
 
                     return $http.post(filterUrl, query.toJSON())
