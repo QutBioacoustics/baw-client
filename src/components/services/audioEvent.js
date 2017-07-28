@@ -32,10 +32,12 @@ angular
                 resource.getLibraryItems = function getLibraryItems(query) {
                     var url = paths.api.routes.audioEvent.filterAbsolute;
 
-                    var qb = QueryBuilder.create(function (baseQuery) {
+                    let qb = QueryBuilder.create(function (baseQuery) {
                         let q = baseQuery;
                         if (query.tagsPartial) {
-                            q = q.contains("tags.text", query.tagsPartial);
+                            let tags = query.tagsPartial.split(",").map(s => s.trim()).filter(s => s.length > 0);
+                            let queries = tags.map((tagPartial) => q.contains("tags.text", tagPartial));
+                            q = q.and(...queries);
                         }
 
                         if (query.reference !== undefined && query.reference !== "all") {
