@@ -142,13 +142,16 @@ class BristlebirdController {
          * is initialised to null, then reverse bound bound from the data progress component
          */
         $scope.nextLink = null;
-        $scope.$on(ngAudioEvents.ended, function navigate(event) {
-            var uriNext = $scope.nextLink();
-            if (uriNext && $scope.audioElementModel.autoPlay) {
-                console.info("Changing page to next sample...");
-                $scope.$apply(function () {
-                    $location.url(uriNext);
-                });
+        $scope.$on(ngAudioEvents.ended, function navigate(event, target) {
+            var uriNext;
+            if (target === $scope.audioElementModel) {
+                uriNext = $scope.nextLink();
+                if (uriNext && $scope.audioElementModel.autoPlay) {
+                    console.info("Changing page to next sample...");
+                    $scope.$apply(function () {
+                        $location.url(uriNext);
+                    });
+                }
             }
         });
 
