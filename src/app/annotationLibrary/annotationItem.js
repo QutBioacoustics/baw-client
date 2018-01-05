@@ -7,12 +7,17 @@ angular.module("bawApp.components.annotationItem", [])
             function ($scope, $http) {
 
                 this.audioElement = {
-                     volume: 1,
-                     position: 0
+                    volume: 1,
+                    position: 0,
+                    autoPlay: (typeof this.autoplay === "boolean") ? this.autoplay : false
                 };
+
+
+
 
             }],
         bindings: {
             annotation: "=annotation",
+            autoplay: "<"
         }
     });
